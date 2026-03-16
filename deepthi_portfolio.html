@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Naga Vijaya Deepthi Ayyagari — Space Scientist</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:        #050c14;
+    --bg2:       #07111d;
+    --bg3:       #0a1828;
+    --plasma:    #00d4ff;
+    --plasma2:   #00ffe0;
+    --aurora:    #7b61ff;
+    --aurora2:   #ff61c7;
+    --glow:      rgba(0,212,255,0.18);
+    --glow2:     rgba(123,97,255,0.14);
+    --text:      #cde6f5;
+    --text2:     #6fa8c8;
+    --text3:     #3a6680;
+    --border:    rgba(0,212,255,0.12);
+    --border2:   rgba(0,212,255,0.25);
+    --mono:      'Share Tech Mono', monospace;
+    --head:      'Rajdhani', sans-serif;
+    --body:      'Crimson Pro', serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ─── CANVAS BG ─── */
+  #ionosphere-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  /* ─── NOISE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    background-size: 180px;
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
+  /* ─── LAYOUT ─── */
+  .container {
+    position: relative;
+    z-index: 2;
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(5,12,20,0.82);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  nav .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 58px;
+  }
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--plasma);
+    letter-spacing: 0.08em;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--text3); }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: var(--head);
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text2);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--plasma); }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 100px 0 60px;
+    position: relative;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--plasma);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+  .hero-tag::before {
+    content: '';
+    display: inline-block;
+    width: 32px; height: 1px;
+    background: var(--plasma);
+    box-shadow: 0 0 8px var(--plasma);
+  }
+  h1 {
+    font-family: var(--head);
+    font-weight: 700;
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: #e8f6ff;
+    margin-bottom: 0.4rem;
+  }
+  h1 .glow-name {
+    background: linear-gradient(135deg, var(--plasma) 0%, var(--plasma2) 60%, var(--aurora) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 18px rgba(0,212,255,0.4));
+  }
+  .hero-title {
+    font-family: var(--head);
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: var(--text2);
+    letter-spacing: 0.06em;
+    margin-bottom: 1.8rem;
+    border-left: 2px solid var(--aurora);
+    padding-left: 1rem;
+  }
+  .hero-bio {
+    font-size: 1.05rem;
+    color: var(--text2);
+    max-width: 480px;
+    margin-bottom: 2.2rem;
+    font-style: italic;
+    line-height: 1.75;
+  }
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 2.4rem;
+  }
+  .badge {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--border2);
+    color: var(--plasma);
+    background: rgba(0,212,255,0.05);
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+  .cta-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    font-family: var(--head);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.7rem 1.8rem;
+    background: linear-gradient(135deg, var(--plasma), var(--aurora));
+    color: var(--bg);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: 2px;
+    box-shadow: 0 0 24px rgba(0,212,255,0.25);
+    transition: box-shadow 0.2s, transform 0.2s;
+    display: inline-block;
+  }
+  .btn-primary:hover { box-shadow: 0 0 40px rgba(0,212,255,0.45); transform: translateY(-1px); }
+  .btn-secondary {
+    font-family: var(--head);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.7rem 1.8rem;
+    background: transparent;
+    color: var(--plasma);
+    border: 1px solid var(--border2);
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: background 0.2s, border-color 0.2s;
+    display: inline-block;
+  }
+  .btn-secondary:hover { background: rgba(0,212,255,0.08); border-color: var(--plasma); }
+
+  /* ─── HERO VISUAL ─── */
+  .hero-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 380px;
+  }
+  .orbit-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid;
+    animation: spin linear infinite;
+  }
+  .orbit-ring:nth-child(1) {
+    width: 300px; height: 300px;
+    border-color: rgba(0,212,255,0.15);
+    animation-duration: 24s;
+  }
+  .orbit-ring:nth-child(2) {
+    width: 220px; height: 220px;
+    border-color: rgba(123,97,255,0.2);
+    animation-duration: 16s;
+    animation-direction: reverse;
+  }
+  .orbit-ring:nth-child(3) {
+    width: 140px; height: 140px;
+    border-color: rgba(0,255,224,0.2);
+    animation-duration: 10s;
+  }
+  .orbit-dot {
+    position: absolute;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    top: -3.5px;
+    left: calc(50% - 3.5px);
+    box-shadow: 0 0 12px currentColor;
+  }
+  .orbit-ring:nth-child(1) .orbit-dot { background: var(--plasma); color: var(--plasma); }
+  .orbit-ring:nth-child(2) .orbit-dot { background: var(--aurora); color: var(--aurora); }
+  .orbit-ring:nth-child(3) .orbit-dot { background: var(--plasma2); color: var(--plasma2); }
+  .orbit-center {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,212,255,0.3) 0%, rgba(123,97,255,0.15) 50%, transparent 100%);
+    border: 1px solid rgba(0,212,255,0.4);
+    box-shadow: 0 0 40px rgba(0,212,255,0.25), inset 0 0 20px rgba(0,212,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    z-index: 2;
+    animation: pulse 3s ease-in-out infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 40px rgba(0,212,255,0.25), inset 0 0 20px rgba(0,212,255,0.1); }
+    50% { box-shadow: 0 0 70px rgba(0,212,255,0.45), inset 0 0 30px rgba(0,212,255,0.2); }
+  }
+
+  /* ─── SECTION SHARED ─── */
+  section { padding: 90px 0; position: relative; z-index: 2; }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--plasma);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+  }
+  h2 {
+    font-family: var(--head);
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #deeef8;
+    margin-bottom: 3rem;
+  }
+  h3 {
+    font-family: var(--head);
+    font-weight: 600;
+    color: #cde6f5;
+  }
+
+  /* ─── ABOUT ─── */
+  #about { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .about-text p { color: var(--text2); margin-bottom: 1.2rem; }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .stat-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 1.2rem;
+    border-radius: 3px;
+    text-align: center;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .stat-card:hover { border-color: var(--border2); box-shadow: 0 0 20px var(--glow); }
+  .stat-num {
+    font-family: var(--mono);
+    font-size: 1.8rem;
+    color: var(--plasma);
+    display: block;
+    text-shadow: 0 0 12px rgba(0,212,255,0.4);
+  }
+  .stat-label {
+    font-family: var(--head);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+  }
+
+  /* ─── SKILLS ─── */
+  #skills { background: var(--bg); }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .skill-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 1.6rem;
+    border-radius: 3px;
+    transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .skill-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--plasma), var(--aurora));
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .skill-card:hover { border-color: rgba(0,212,255,0.35); box-shadow: 0 0 30px var(--glow); transform: translateY(-3px); }
+  .skill-card:hover::before { opacity: 1; }
+  .skill-icon { font-size: 1.6rem; margin-bottom: 0.8rem; display: block; }
+  .skill-card h3 { font-size: 0.95rem; letter-spacing: 0.05em; margin-bottom: 0.6rem; color: var(--plasma); }
+  .skill-card p { font-size: 0.88rem; color: var(--text2); line-height: 1.6; }
+
+  /* ─── EXPERIENCE ─── */
+  #experience { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .timeline { position: relative; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, var(--plasma), var(--aurora), transparent);
+    opacity: 0.35;
+  }
+  .tl-item {
+    padding-left: 2.5rem;
+    margin-bottom: 3rem;
+    position: relative;
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -4px; top: 8px;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--plasma);
+    box-shadow: 0 0 12px var(--plasma);
+  }
+  .tl-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.4rem;
+    flex-wrap: wrap;
+  }
+  .tl-period {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--plasma);
+    letter-spacing: 0.1em;
+  }
+  .tl-location {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+  }
+  .tl-role {
+    font-family: var(--head);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #deeef8;
+    margin-bottom: 0.2rem;
+  }
+  .tl-org {
+    font-family: var(--head);
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--aurora);
+    margin-bottom: 0.8rem;
+  }
+  .tl-desc {
+    color: var(--text2);
+    font-size: 0.95rem;
+  }
+  .tl-desc ul { padding-left: 1.2rem; margin-top: 0.4rem; }
+  .tl-desc li { margin-bottom: 0.3rem; font-size: 0.9rem; color: var(--text2); }
+
+  /* ─── EDUCATION ─── */
+  #education { background: var(--bg); }
+  .edu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .edu-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 1.8rem;
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+  .edu-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--plasma), var(--aurora));
+    transform: scaleX(0);
+    transition: transform 0.3s;
+    transform-origin: left;
+  }
+  .edu-card:hover { border-color: var(--border2); box-shadow: 0 0 25px var(--glow); }
+  .edu-card:hover::after { transform: scaleX(1); }
+  .edu-degree {
+    font-family: var(--head);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--plasma2);
+    margin-bottom: 0.3rem;
+  }
+  .edu-inst {
+    font-family: var(--head);
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: #cde6f5;
+    margin-bottom: 0.3rem;
+  }
+  .edu-meta {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.7rem;
+  }
+  .grade-badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    padding: 0.2rem 0.55rem;
+    border: 1px solid rgba(0,255,224,0.3);
+    color: var(--plasma2);
+    background: rgba(0,255,224,0.05);
+    border-radius: 2px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ─── PROJECTS ─── */
+  #projects { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    gap: 1.5rem;
+  }
+  .project-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 1.8rem;
+    border-radius: 3px;
+    transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+    display: flex;
+    flex-direction: column;
+  }
+  .project-card:hover { border-color: rgba(123,97,255,0.4); box-shadow: 0 0 30px var(--glow2); transform: translateY(-4px); }
+  .proj-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .proj-icon {
+    width: 40px; height: 40px;
+    border-radius: 8px;
+    background: rgba(0,212,255,0.07);
+    border: 1px solid var(--border2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .project-card h3 { font-size: 1rem; line-height: 1.3; color: #deeef8; }
+  .proj-funder {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--aurora);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+  }
+  .project-card p { font-size: 0.9rem; color: var(--text2); flex: 1; }
+  .proj-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1rem;
+  }
+  .proj-tag {
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    padding: 0.18rem 0.5rem;
+    border: 1px solid var(--border);
+    color: var(--text3);
+    border-radius: 2px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ─── PUBLICATIONS ─── */
+  #publications { background: var(--bg); }
+  .pub-list { display: flex; flex-direction: column; gap: 1rem; }
+  .pub-item {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--plasma);
+    padding: 1.2rem 1.5rem;
+    border-radius: 0 3px 3px 0;
+    transition: box-shadow 0.2s;
+  }
+  .pub-item:hover { box-shadow: -3px 0 20px rgba(0,212,255,0.2), 0 0 20px var(--glow); }
+  .pub-title {
+    font-family: var(--head);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #deeef8;
+    margin-bottom: 0.3rem;
+    line-height: 1.4;
+  }
+  .pub-authors {
+    font-size: 0.83rem;
+    color: var(--text3);
+    margin-bottom: 0.3rem;
+    font-style: italic;
+  }
+  .pub-journal {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--plasma);
+    letter-spacing: 0.08em;
+  }
+  .pub-badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    padding: 0.15rem 0.45rem;
+    background: rgba(255,97,199,0.12);
+    border: 1px solid rgba(255,97,199,0.3);
+    color: var(--aurora2);
+    border-radius: 2px;
+    margin-left: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    vertical-align: middle;
+  }
+  .conf-pub-item {
+    border-left-color: var(--aurora);
+  }
+  .conf-pub-item .pub-journal { color: var(--aurora); }
+
+  /* ─── AWARDS ─── */
+  #awards { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .awards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+  .award-item {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 1.3rem;
+    border-radius: 3px;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .award-item:hover { border-color: rgba(255,193,7,0.3); box-shadow: 0 0 20px rgba(255,193,7,0.08); }
+  .award-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .award-text { font-size: 0.88rem; color: var(--text2); line-height: 1.5; }
+  .award-text strong { color: var(--text); font-family: var(--head); font-size: 0.9rem; display: block; margin-bottom: 0.2rem; }
+
+  /* ─── GALLERY (Skills visual) ─── */
+  #gallery { background: var(--bg); }
+  .radar-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3rem;
+  }
+  .prog-bars { display: flex; flex-direction: column; gap: 1rem; }
+  .prog-item { display: flex; align-items: center; gap: 1rem; }
+  .prog-label {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--text2);
+    width: 110px;
+    flex-shrink: 0;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .prog-track {
+    flex: 1;
+    height: 4px;
+    background: var(--bg3);
+    border-radius: 2px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .prog-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--plasma), var(--aurora));
+    box-shadow: 0 0 8px rgba(0,212,255,0.4);
+    animation: fillBar 1.5s ease-out forwards;
+    transform-origin: left;
+  }
+  @keyframes fillBar { from { width: 0; } }
+  .prog-pct {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--plasma);
+    width: 35px;
+    text-align: right;
+  }
+  .langs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.8rem;
+    margin-top: 2rem;
+  }
+  .lang-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 0.9rem 1rem;
+    border-radius: 3px;
+    text-align: center;
+  }
+  .lang-name { font-family: var(--head); font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 0.2rem; }
+  .lang-level { font-family: var(--mono); font-size: 0.6rem; color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* ─── CONTACT ─── */
+  #contact { background: var(--bg2); border-top: 1px solid var(--border); }
+  .contact-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .contact-intro { font-size: 1rem; color: var(--text2); line-height: 1.75; }
+  .contact-links { margin-top: 2rem; display: flex; flex-direction: column; gap: 0.9rem; }
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--text2);
+    text-decoration: none;
+    transition: color 0.2s;
+    letter-spacing: 0.06em;
+    padding: 0.7rem 1rem;
+    border: 1px solid var(--border);
+    background: var(--bg3);
+    border-radius: 2px;
+    transition: border-color 0.2s, box-shadow 0.2s, color 0.2s;
+  }
+  .contact-link:hover { color: var(--plasma); border-color: var(--border2); box-shadow: 0 0 16px var(--glow); }
+  .contact-link-icon { font-size: 1rem; }
+  .refs-list { display: flex; flex-direction: column; gap: 1rem; }
+  .ref-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 1.2rem;
+    border-radius: 3px;
+  }
+  .ref-name { font-family: var(--head); font-size: 0.95rem; font-weight: 600; color: var(--plasma2); margin-bottom: 0.2rem; }
+  .ref-role { font-size: 0.82rem; color: var(--text2); margin-bottom: 0.2rem; font-style: italic; }
+  .ref-email { font-family: var(--mono); font-size: 0.68rem; color: var(--text3); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: 2rem 0;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+  footer p {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--text3);
+    letter-spacing: 0.12em;
+  }
+  footer span { color: var(--plasma); }
+
+  /* ─── UTILITY ─── */
+  .divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--border2), transparent); margin: 2rem 0; }
+  .tag-aurora { color: var(--aurora); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .hero-grid, .about-grid, .contact-inner { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ANIMATED BACKGROUND CANVAS -->
+<canvas id="ionosphere-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="container">
+    <a class="nav-logo" href="#hero">NVD<span>.</span>AYYAGARI</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-tag">Space Scientist · GNSS · Ionosphere</div>
+        <h1><span class="glow-name">Naga Vijaya<br>Deepthi Ayyagari</span></h1>
+        <div class="hero-title">Research Scientist · GEOLOC, Université Gustave Eiffel · Nantes, France</div>
+        <p class="hero-bio">Decoding the ionosphere from orbit — bridging satellite data, machine learning, and space weather science to navigate the unexplored frontiers between Earth and space.</p>
+        <div class="hero-badges">
+          <span class="badge">Ph.D. IIT Indore</span>
+          <span class="badge">NavIC · GPS · GNSS</span>
+          <span class="badge">ESA — NAVISP</span>
+          <span class="badge">IEEE GRSS Member</span>
+          <span class="badge">URSI Young Scientist 2022</span>
+        </div>
+        <div class="cta-row">
+          <a href="#contact" class="btn-primary">Get in Touch</a>
+          <a href="#publications" class="btn-secondary">Publications</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="orbit-ring"><div class="orbit-dot"></div></div>
+        <div class="orbit-ring"><div class="orbit-dot"></div></div>
+        <div class="orbit-ring"><div class="orbit-dot"></div></div>
+        <div class="orbit-center">🛰️</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="section-label">01 — Profile</div>
+    <h2>About Me</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I am a space scientist and researcher specializing in ionospheric dynamics, GNSS signal analysis, and machine learning for space weather applications. Currently based in Nantes, France, I work at GEOLOC, Université Gustave Eiffel on an ESA-funded project developing advanced positioning solutions.</p>
+        <p>My doctoral research at IIT Indore focused on studying the low-latitude ionosphere using India's NavIC constellation — one of the first comprehensive investigations combining NavIC and GPS data across Indian geographic locations. My work spans magnetic reconnection, plasma energization, geomagnetic storms, and satellite navigation.</p>
+        <p>I am deeply committed to open science, international collaboration, and mentoring the next generation of space scientists. I have led IEEE Student Branch activities and volunteered at CEDAR workshops in Boulder, Colorado.</p>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <span class="stat-num">6+</span>
+          <span class="stat-label">Journal Papers</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">4+</span>
+          <span class="stat-label">Conf. Proceedings</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">9+</span>
+          <span class="stat-label">Students Mentored</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">8+</span>
+          <span class="stat-label">Years Research</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="section-label">02 — Expertise</div>
+    <h2>Skills &amp; Tools</h2>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <span class="skill-icon">📡</span>
+        <h3>Ionospheric Data Analysis</h3>
+        <p>GNSS &amp; NavIC TEC, scintillation indices (S4, ROTI), solar &amp; magnetic indices, model-data comparisons, low-latitude plasma irregularities.</p>
+      </div>
+      <div class="skill-card">
+        <span class="skill-icon">🔢</span>
+        <h3>Numerical Modeling</h3>
+        <p>Ionospheric (TEC) modeling, Kalman filtering, GNSS/INS data fusion, Numerical Weather Prediction models in Fortran.</p>
+      </div>
+      <div class="skill-card">
+        <span class="skill-icon">🐍</span>
+        <h3>Programming &amp; Tools</h3>
+        <p>Python (NumPy, SciPy, Matplotlib), MATLAB, Git, Docker. Data formats: NetCDF, RINEX, HDF5, NMEA, ISMR, ASCII.</p>
+      </div>
+      <div class="skill-card">
+        <span class="skill-icon">🤖</span>
+        <h3>Machine Learning</h3>
+        <p>Supervised learning for GNSS error correction, data modeling, ML-based event detection from multi-decade satellite datasets (95.6% precision).</p>
+      </div>
+      <div class="skill-card">
+        <span class="skill-icon">🛰️</span>
+        <h3>Satellite Navigation</h3>
+        <p>NavIC, GPS, RTK &amp; PPP evaluations, multi-GNSS comparative analysis, near real-time signal processing, GNSS/INS fusion algorithms.</p>
+      </div>
+      <div class="skill-card">
+        <span class="skill-icon">📊</span>
+        <h3>Scientific Visualization</h3>
+        <p>Expert in ionospheric trend visualization, GNSS signal quality interpretation, space weather event mapping, and data storytelling.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="section-label">03 — Career</div>
+    <h2>Research Experience</h2>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-meta">
+          <span class="tl-period">2023 — Present</span>
+          <span class="tl-location">📍 Nantes, France</span>
+        </div>
+        <div class="tl-role">Research Scientist</div>
+        <div class="tl-org">GEOLOC, Université Gustave Eiffel</div>
+        <div class="tl-desc">
+          <p><em>Project: NAVISP – CHARLI (ESA-funded) — Positioning solutions for firefighters using GNSS</em></p>
+          <ul>
+            <li>Evaluated GNSS receivers and reckoning systems for Nav4you device compatibility.</li>
+            <li>Developed ML algorithms for GNSS/INS data fusion, improving localization accuracy in space and terrestrial applications.</li>
+            <li>Conducted advanced near real-time satellite signal processing.</li>
+            <li>Built Python/MATLAB computational tools for multi-sensor data analysis.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-meta">
+          <span class="tl-period">2017 — 2023</span>
+          <span class="tl-location">📍 Indore, India</span>
+        </div>
+        <div class="tl-role">Doctoral Researcher · DST Inspire Fellow</div>
+        <div class="tl-org">Indian Institute of Technology Indore</div>
+        <div class="tl-desc">
+          <p><em>Project: Study of Low Latitude Ionosphere using NavIC — funded by DST &amp; ISRO (NGP-27)</em></p>
+          <ul>
+            <li>Pioneered NavIC+GPS combined analysis across Indian geographic locations for ionospheric dynamics under geomagnetic storms.</li>
+            <li>Identified gravity waves as key drivers of ionospheric variations through troposphere-ionosphere coupling research.</li>
+            <li>Conducted comprehensive RTK &amp; PPP performance evaluations of NavIC and GPS.</li>
+            <li>Mentored 9+ students on ML-based space weather event detection (95.6% precision).</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-meta">
+          <span class="tl-period">Sep 2016 — Jun 2017</span>
+          <span class="tl-location">📍 Telangana, India</span>
+        </div>
+        <div class="tl-role">Research Engineer</div>
+        <div class="tl-org">NRN Aerospace Systems Pvt Ltd</div>
+        <div class="tl-desc">
+          <p>Designed sensor prototypes, authored design proposals and pitch decks, explored inertial navigation and avionics systems, and executed simulation iterations.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-meta">
+          <span class="tl-period">Aug 2014 — Nov 2015</span>
+          <span class="tl-location">📍 Telangana, India</span>
+        </div>
+        <div class="tl-role">Research Intern — CEAWMT</div>
+        <div class="tl-org">Jawaharlal Nehru Technological University Hyderabad</div>
+        <div class="tl-desc">
+          <p>Worked with INCOIS scientists on Sea Surface Temperature analysis linked to ENSO and Indian Monsoon. Hands-on with Fortran NWP models and Automatic Weather Station data.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="container">
+    <div class="section-label">04 — Academic</div>
+    <h2>Education</h2>
+    <div class="edu-grid">
+      <div class="edu-card">
+        <div class="edu-degree">Ph.D. Scholar</div>
+        <div class="edu-inst">Indian Institute of Technology Indore</div>
+        <div class="edu-meta">2017 – 2023 · Indore, India</div>
+        <p style="font-size:0.88rem; color:var(--text2); margin-bottom:0.8rem;">Astronomy, Astrophysics &amp; Space Engineering</p>
+        <span class="grade-badge">Grade: A+</span>
+      </div>
+      <div class="edu-card">
+        <div class="edu-degree">M.Sc. Satellite Meteorology</div>
+        <div class="edu-inst">JNTUH · Jawaharlal Nehru Tech. University</div>
+        <div class="edu-meta">2013 – 2016 · Hyderabad, India</div>
+        <p style="font-size:0.88rem; color:var(--text2); margin-bottom:0.8rem;">Satellite Meteorology &amp; Weather Informatics</p>
+        <span class="grade-badge">Distinction · Gold Medal</span>
+      </div>
+      <div class="edu-card">
+        <div class="edu-degree">B.Tech Aeronautical Engineering</div>
+        <div class="edu-inst">JNTUH · Jawaharlal Nehru Tech. University</div>
+        <div class="edu-meta">2009 – 2013 · Hyderabad, India</div>
+        <p style="font-size:0.88rem; color:var(--text2); margin-bottom:0.8rem;">Aeronautical Engineering</p>
+        <span class="grade-badge">Distinction</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <div class="section-label">05 — Research Projects</div>
+    <h2>Key Projects</h2>
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="proj-header">
+          <div class="proj-icon">🛡️</div>
+          <h3>NAVISP – CHARLI: Localization for Firefighters</h3>
+        </div>
+        <div class="proj-funder">⚡ European Space Agency (ESA-funded)</div>
+        <p>Development of a commercial GNSS-based positioning and tracking solution for firefighters in challenging indoor/outdoor environments. Involves GNSS/INS data fusion and ML-enhanced localization accuracy.</p>
+        <div class="proj-tags">
+          <span class="proj-tag">GNSS/INS</span><span class="proj-tag">Machine Learning</span><span class="proj-tag">ESA</span><span class="proj-tag">Real-time</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="proj-header">
+          <div class="proj-icon">🌐</div>
+          <h3>Low Latitude Ionosphere via NavIC</h3>
+        </div>
+        <div class="proj-funder">⚡ DST Inspire Fellowship + ISRO (NGP-27)</div>
+        <p>First systematic study combining NavIC and GPS across Indian stations to analyze ionospheric disturbances, geomagnetic storms, plasma irregularities, and troposphere-ionosphere coupling.</p>
+        <div class="proj-tags">
+          <span class="proj-tag">NavIC</span><span class="proj-tag">GPS</span><span class="proj-tag">Space Weather</span><span class="proj-tag">Scintillation</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="proj-header">
+          <div class="proj-icon">🌀</div>
+          <h3>Ionospheric Response to Tropical Cyclones</h3>
+        </div>
+        <div class="proj-funder">⚡ Peer-reviewed study · ASR 2022</div>
+        <p>Investigated ionospheric signatures during Tropical Cyclones Amphan and Nisarga using GNSS data, revealing upper-atmospheric coupling mechanisms triggered by extreme weather events.</p>
+        <div class="proj-tags">
+          <span class="proj-tag">Cyclone</span><span class="proj-tag">TEC</span><span class="proj-tag">Atmospheric Coupling</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="proj-header">
+          <div class="proj-icon">🌑</div>
+          <h3>TEC Variations During Solar Eclipse 2020</h3>
+        </div>
+        <div class="proj-funder">⚡ IEEE InCAP 2021</div>
+        <p>Analyzed Total Electron Content variations over central India during the Annular Solar Eclipse of June 21, 2020, capturing ionospheric depletion and recovery dynamics.</p>
+        <div class="proj-tags">
+          <span class="proj-tag">Solar Eclipse</span><span class="proj-tag">TEC</span><span class="proj-tag">NavIC</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="proj-header">
+          <div class="proj-icon">🧲</div>
+          <h3>Geomagnetic Storm Impact on NavIC</h3>
+        </div>
+        <div class="proj-funder">⚡ Springer CODEC 2019</div>
+        <p>First study examining intense geomagnetic storm effects on NavIC signals at Indore, demonstrating NavIC's superior spatial and temporal coverage for ionospheric monitoring.</p>
+        <div class="proj-tags">
+          <span class="proj-tag">Geomagnetic Storm</span><span class="proj-tag">NavIC</span><span class="proj-tag">Signal Quality</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="proj-header">
+          <div class="proj-icon">📈</div>
+          <h3>ML for Space Weather Event Detection</h3>
+        </div>
+        <div class="proj-funder">⚡ IIT Indore — Mentorship Project</div>
+        <p>Led mentorship of 9+ students developing linear regression ML models to detect space weather events from 2–5 decade satellite datasets, achieving 95.6% detection precision.</p>
+        <div class="proj-tags">
+          <span class="proj-tag">ML</span><span class="proj-tag">Linear Regression</span><span class="proj-tag">Satellite Data</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="container">
+    <div class="section-label">06 — Research Output</div>
+    <h2>Publications</h2>
+    <h3 style="font-size:0.8rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--plasma); margin-bottom:1.2rem;">Journal Articles</h3>
+    <div class="pub-list" style="margin-bottom:2.5rem;">
+      <div class="pub-item">
+        <div class="pub-title">Performance of NavIC for studying the ionosphere at an EIA region in India</div>
+        <div class="pub-authors">Deepthi Ayyagari, Sumanjit Chakraborty, Saurabh Das, Ashish Shukla, Ashik Paul, Abhirup Datta</div>
+        <div class="pub-journal">Advances in Space Research · Vol. 65, Issue 6, 2020 · DOI: 10.1016/j.asr.2019.12.019</div>
+      </div>
+      <div class="pub-item">
+        <div class="pub-title">Systematic Study of Ionospheric Scintillation over Indian Low-Latitudes during Low Solar Activity</div>
+        <div class="pub-authors">Deepthi Ayyagari, Abhirup Datta, Sumanjit Chakraborty</div>
+        <div class="pub-journal">Advances in Space Research · Vol. 70, 2022 · DOI: 10.1016/j.asr.2022.07.026</div>
+      </div>
+      <div class="pub-item">
+        <div class="pub-title">Ionospheric Response during Tropical Cyclones: a brief review on Amphan and Nisarga</div>
+        <div class="pub-authors">Deepthi Ayyagari, Soumen Datta, Saurabh Das, Abhirup Datta</div>
+        <div class="pub-journal">Advances in Space Research · 2022 · DOI: 10.1016/j.asr.2022.11.026</div>
+      </div>
+    </div>
+    <h3 style="font-size:0.8rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--aurora); margin-bottom:1.2rem;">Conference Proceedings</h3>
+    <div class="pub-list" style="margin-bottom:2.5rem;">
+      <div class="pub-item conf-pub-item">
+        <div class="pub-title">Characteristic Analysis of Low-Latitude NavIC Signal Intensity Fading <span class="pub-badge">🏆 Young Scientist Award</span></div>
+        <div class="pub-authors">D. Ayyagari, A. Datta</div>
+        <div class="pub-journal">URSI AT-AP-RASC 2022 · DOI: 10.23919/AT-AP-RASC54737.2022.9814316</div>
+      </div>
+      <div class="pub-item conf-pub-item">
+        <div class="pub-title">TEC Variations over Central India during Annular Eclipse of June 21, 2020</div>
+        <div class="pub-authors">D. Ayyagari, A. Datta</div>
+        <div class="pub-journal">IEEE InCAP 2021 · DOI: 10.1109/InCAP52216.2021.9726408</div>
+      </div>
+      <div class="pub-item conf-pub-item">
+        <div class="pub-title">Impact of Intense Geomagnetic Storm on NavIC Signals Over Indore</div>
+        <div class="pub-authors">Ayyagari D., Chakraborty S., Datta A., Das S.</div>
+        <div class="pub-journal">Springer CODEC 2019 · Lecture Notes in Networks and Systems Vol. 147</div>
+      </div>
+      <div class="pub-item conf-pub-item">
+        <div class="pub-title">Ionospheric Observations over Central India: Comparative Study of NavIC and GNSS</div>
+        <div class="pub-authors">D. Ayyagari, S. Chakraborty, A. Datta</div>
+        <div class="pub-journal">URSI AP-RASC 2019 · DOI: 10.23919/URSIAP-RASC.2019.8738244</div>
+      </div>
+    </div>
+    <h3 style="font-size:0.8rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--plasma2); margin-bottom:1.2rem;">Co-authored Publications</h3>
+    <div class="pub-list">
+      <div class="pub-item" style="border-left-color:var(--plasma2);">
+        <div class="pub-title">Comparative Studies of Ionospheric Models with GNSS and NavIC over Indian Sector during Geomagnetic Activities</div>
+        <div class="pub-authors">Sumanjit Chakraborty, Abhirup Datta, Sarbani Ray, Deepthi Ayyagari, Ashik Paul</div>
+        <div class="pub-journal">Advances in Space Research · Vol. 66, Issue 4, 2020 · DOI: 10.1016/j.asr.2020.04.047</div>
+      </div>
+      <div class="pub-item" style="border-left-color:var(--plasma2);">
+        <div class="pub-title">First Results of Low-latitude Ionospheric Irregularities Measured by NavIC and GPS near the Anomaly Crest and the Magnetic Equator</div>
+        <div class="pub-authors">Sumanjit Chakraborty, Abhirup Datta, Deepthi Ayyagari</div>
+        <div class="pub-journal">arXiv:2203.02218 · DOI: 10.48550/arXiv.2203.02218</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AWARDS -->
+<section id="awards">
+  <div class="container">
+    <div class="section-label">07 — Recognition</div>
+    <h2>Honours &amp; Awards</h2>
+    <div class="awards-grid">
+      <div class="award-item">
+        <div class="award-icon">🏆</div>
+        <div class="award-text"><strong>URSI Young Scientist Award 2022</strong>For characteristic analysis of low-latitude NavIC signal intensity fading at AT-AP-RASC 2022.</div>
+      </div>
+      <div class="award-item">
+        <div class="award-icon">🥇</div>
+        <div class="award-text"><strong>Academic Achiever Award — University Gold Medal</strong>Overall best performance at JNTUH for M.Sc. Class of 2016.</div>
+      </div>
+      <div class="award-item">
+        <div class="award-icon">🎓</div>
+        <div class="award-text"><strong>DST Inspire Fellowship</strong>Received March 2017 for doctoral research at IIT Indore — Department of Science &amp; Technology, Govt. of India.</div>
+      </div>
+      <div class="award-item">
+        <div class="award-icon">📖</div>
+        <div class="award-text"><strong>Peer Reviewer</strong>Advances in Space Research (Elsevier) — contributing to the rigour of the field.</div>
+      </div>
+      <div class="award-item">
+        <div class="award-icon">📡</div>
+        <div class="award-text"><strong>IEEE Member</strong>Member of IEEE GRSS (Geoscience &amp; Remote Sensing), IEEE NTC (Nanotechnology Council), and IEEE WIE (Women in Engineering).</div>
+      </div>
+      <div class="award-item">
+        <div class="award-icon">🌐</div>
+        <div class="award-text"><strong>IEEE Student Branch Chair, IIT Indore</strong>Founded and led the IEEE Student Branch (2019–2021), organizing two international IEEE workshops and launching multiple IEEE chapters.</div>
+      </div>
+      <div class="award-item">
+        <div class="award-icon">🚀</div>
+        <div class="award-text"><strong>CEDAR Student Volunteer, Boulder CO</strong>Active volunteer at CEDAR 2020 &amp; 2021 — scheduled talks, wrote workshop newsletters, led quiz sessions.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY — PROFICIENCY -->
+<section id="gallery">
+  <div class="container">
+    <div class="section-label">08 — Proficiency &amp; Languages</div>
+    <h2>Technical Proficiency</h2>
+    <div class="prog-bars">
+      <div class="prog-item">
+        <span class="prog-label">Python</span>
+        <div class="prog-track"><div class="prog-fill" style="width:92%"></div></div>
+        <span class="prog-pct">92%</span>
+      </div>
+      <div class="prog-item">
+        <span class="prog-label">MATLAB</span>
+        <div class="prog-track"><div class="prog-fill" style="width:90%"></div></div>
+        <span class="prog-pct">90%</span>
+      </div>
+      <div class="prog-item">
+        <span class="prog-label">Machine Learning</span>
+        <div class="prog-track"><div class="prog-fill" style="width:82%"></div></div>
+        <span class="prog-pct">82%</span>
+      </div>
+      <div class="prog-item">
+        <span class="prog-label">GNSS Analysis</span>
+        <div class="prog-track"><div class="prog-fill" style="width:95%"></div></div>
+        <span class="prog-pct">95%</span>
+      </div>
+      <div class="prog-item">
+        <span class="prog-label">Data Visualization</span>
+        <div class="prog-track"><div class="prog-fill" style="width:88%"></div></div>
+        <span class="prog-pct">88%</span>
+      </div>
+      <div class="prog-item">
+        <span class="prog-label">Docker / Git</span>
+        <div class="prog-track"><div class="prog-fill" style="width:75%"></div></div>
+        <span class="prog-pct">75%</span>
+      </div>
+    </div>
+    <div class="divider" style="margin:2.5rem 0;"></div>
+    <h3 style="font-family:var(--head); font-size:1rem; letter-spacing:0.1em; color:var(--text2); text-transform:uppercase; margin-bottom:1.2rem;">Languages</h3>
+    <div class="langs-grid">
+      <div class="lang-card"><div class="lang-name">English</div><div class="lang-level">Fluent</div></div>
+      <div class="lang-card"><div class="lang-name">Telugu</div><div class="lang-level">Native</div></div>
+      <div class="lang-card"><div class="lang-name">Hindi</div><div class="lang-level">Fluent</div></div>
+      <div class="lang-card"><div class="lang-name">German</div><div class="lang-level">Beginner</div></div>
+      <div class="lang-card"><div class="lang-name">French</div><div class="lang-level">Beginner</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label">09 — Connect</div>
+    <h2>Get in Touch</h2>
+    <div class="contact-inner">
+      <div>
+        <p class="contact-intro">I am always open to research collaborations, academic discussions, and opportunities in space science, GNSS, and machine learning. Whether you are a fellow researcher, institution, or industry partner — feel free to reach out.</p>
+        <div class="contact-links">
+          <a href="mailto:nagavijayadeepthi@gmail.com" class="contact-link">
+            <span class="contact-link-icon">✉️</span> nagavijayadeepthi@gmail.com
+          </a>
+          <a href="https://orcid.org" target="_blank" class="contact-link">
+            <span class="contact-link-icon">🔬</span> ORCID Profile
+          </a>
+          <a href="https://www.researchgate.net" target="_blank" class="contact-link">
+            <span class="contact-link-icon">📚</span> ResearchGate
+          </a>
+          <a href="https://linkedin.com" target="_blank" class="contact-link">
+            <span class="contact-link-icon">🔗</span> LinkedIn
+          </a>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size:0.8rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text2); margin-bottom:1.2rem;">References</h3>
+        <div class="refs-list">
+          <div class="ref-card">
+            <div class="ref-name">Prof. Dr. Valerie Renaudin</div>
+            <div class="ref-role">Post-Doctoral Supervisor · Head, AME-GEOLOC<br>Université Gustave Eiffel, Nantes, France</div>
+            <div class="ref-email">valerie.renaudin@univ-eiffel.fr</div>
+          </div>
+          <div class="ref-card">
+            <div class="ref-name">Prof. Dr. Abhirup Datta</div>
+            <div class="ref-role">Ph.D. Thesis Supervisor · Head, Dept. of Astronomy &amp; Space Engineering<br>IIT Indore, India</div>
+            <div class="ref-email">abhirup.datta@iiti.ac.in</div>
+          </div>
+          <div class="ref-card">
+            <div class="ref-name">Dr. Saurabh Das</div>
+            <div class="ref-role">Ph.D. Research Collaborator · Asst. Professor<br>Dept. of Astronomy &amp; Space Engineering, IIT Indore</div>
+            <div class="ref-email">saurabh.das@iiti.ac.in</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p>© 2025 <span>Naga Vijaya Deepthi Ayyagari</span> · Space Scientist · GEOLOC, Université Gustave Eiffel · Nantes, France</p>
+  </div>
+</footer>
+
+<!-- CANVAS ANIMATION -->
+<script>
+const canvas = document.getElementById('ionosphere-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, lines = [], particles = [];
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+  initLines();
+}
+
+function initLines() {
+  lines = [];
+  for (let i = 0; i < 6; i++) {
+    lines.push({
+      y: H * (0.1 + i * 0.14),
+      amplitude: 18 + Math.random() * 30,
+      freq: 0.003 + Math.random() * 0.004,
+      speed: 0.0008 + Math.random() * 0.001,
+      phase: Math.random() * Math.PI * 2,
+      alpha: 0.06 + Math.random() * 0.1,
+      color: i % 3 === 0 ? '0,212,255' : i % 3 === 1 ? '123,97,255' : '0,255,224',
+      width: 0.5 + Math.random() * 0.8
+    });
+  }
+  particles = [];
+  for (let i = 0; i < 60; i++) {
+    particles.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.5,
+      vx: (Math.random() - 0.5) * 0.2,
+      vy: -0.1 - Math.random() * 0.3,
+      alpha: 0.15 + Math.random() * 0.35,
+      color: Math.random() > 0.5 ? '0,212,255' : '123,97,255'
+    });
+  }
+}
+
+let t = 0;
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  t += 0.6;
+
+  // Subtle radial glow top-center
+  const grad = ctx.createRadialGradient(W/2, 0, 0, W/2, 0, H * 0.6);
+  grad.addColorStop(0, 'rgba(0,212,255,0.04)');
+  grad.addColorStop(0.5, 'rgba(123,97,255,0.02)');
+  grad.addColorStop(1, 'transparent');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  // Ionospheric wave lines
+  lines.forEach(l => {
+    ctx.beginPath();
+    for (let x = 0; x <= W; x += 2) {
+      const y = l.y + Math.sin(x * l.freq + t * l.speed + l.phase) * l.amplitude;
+      x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = `rgba(${l.color},${l.alpha})`;
+    ctx.lineWidth = l.width;
+    ctx.shadowColor = `rgba(${l.color},0.4)`;
+    ctx.shadowBlur = 6;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  });
+
+  // Floating particles
+  particles.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.y < -5) { p.y = H + 5; p.x = Math.random() * W; }
+    if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${p.color},${p.alpha})`;
+    ctx.shadowColor = `rgba(${p.color},0.6)`;
+    ctx.shadowBlur = 4;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  });
+
+  requestAnimationFrame(draw);
+}
+
+window.addEventListener('resize', resize);
+resize();
+draw();
+</script>
+</body>
+</html>
