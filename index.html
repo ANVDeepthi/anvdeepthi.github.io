@@ -114,7 +114,7 @@
     min-height: 100vh;
     display: flex;
     align-items: center;
-    padding: 100px 0 60px;
+    padding: 130px 0 60px;
     position: relative;
   }
   .hero-grid {
@@ -233,61 +233,225 @@
   }
   .btn-secondary:hover { background: rgba(0,212,255,0.08); border-color: var(--plasma); }
 
+  /* ─── CUSTOM CURSOR ─── */
+  *, *::before, *::after { cursor: none !important; }
+  #cursor-outer {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid rgba(0,212,255,0.55);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%,-50%);
+    transition: transform 0.08s ease, width 0.2s ease, height 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    box-shadow: 0 0 14px rgba(0,212,255,0.2), inset 0 0 6px rgba(0,212,255,0.06);
+  }
+  #cursor-inner {
+    position: fixed;
+    width: 5px; height: 5px;
+    background: var(--plasma);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%,-50%);
+    box-shadow: 0 0 10px var(--plasma), 0 0 20px rgba(0,212,255,0.4);
+    transition: transform 0.04s ease, width 0.15s, height 0.15s, background 0.15s;
+  }
+  #cursor-outer.hovering {
+    width: 54px; height: 54px;
+    border-color: rgba(0,212,255,0.9);
+    background: rgba(0,212,255,0.04);
+    box-shadow: 0 0 28px rgba(0,212,255,0.35), inset 0 0 14px rgba(0,212,255,0.1);
+  }
+  #cursor-outer.clicking {
+    width: 22px; height: 22px;
+    background: rgba(0,212,255,0.15);
+    border-color: var(--plasma);
+  }
+  #cursor-trail {
+    position: fixed;
+    pointer-events: none;
+    z-index: 99998;
+    top: 0; left: 0;
+  }
+
+  /* ─── SPACE WEATHER BANNER ─── */
+  .sw-banner {
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(90deg, rgba(5,12,20,0) 0%, rgba(123,97,255,0.06) 30%, rgba(0,212,255,0.06) 70%, rgba(5,12,20,0) 100%);
+    border-top: 1px solid rgba(123,97,255,0.18);
+    border-bottom: 1px solid rgba(0,212,255,0.12);
+    padding: 0.5rem 0;
+    overflow: hidden;
+  }
+  .sw-ticker {
+    display: flex;
+    gap: 3rem;
+    animation: ticker 28s linear infinite;
+    white-space: nowrap;
+    width: max-content;
+  }
+  .sw-item {
+    font-family: var(--mono);
+    font-size: 0.63rem;
+    letter-spacing: 0.12em;
+    color: var(--text3);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .sw-item .sw-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+    animation: blink 2s ease-in-out infinite;
+  }
+  .sw-dot.green  { background: #00ff88; box-shadow: 0 0 6px #00ff88; }
+  .sw-dot.yellow { background: #ffc107; box-shadow: 0 0 6px #ffc107; animation-delay: 0.7s; }
+  .sw-dot.red    { background: #ff4560; box-shadow: 0 0 6px #ff4560; animation-delay: 1.4s; }
+  .sw-dot.cyan   { background: var(--plasma); box-shadow: 0 0 6px var(--plasma); animation-delay: 0.3s; }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
   /* ─── HERO VISUAL ─── */
   .hero-visual {
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    height: 380px;
+    height: 420px;
   }
-  .orbit-ring {
+
+  /* Earth at center */
+  .earth-core {
     position: absolute;
+    width: 80px; height: 80px;
     border-radius: 50%;
-    border: 1px solid;
-    animation: spin linear infinite;
-  }
-  .orbit-ring:nth-child(1) {
-    width: 300px; height: 300px;
-    border-color: rgba(0,212,255,0.15);
-    animation-duration: 24s;
-  }
-  .orbit-ring:nth-child(2) {
-    width: 220px; height: 220px;
-    border-color: rgba(123,97,255,0.2);
-    animation-duration: 16s;
-    animation-direction: reverse;
-  }
-  .orbit-ring:nth-child(3) {
-    width: 140px; height: 140px;
-    border-color: rgba(0,255,224,0.2);
-    animation-duration: 10s;
-  }
-  .orbit-dot {
-    position: absolute;
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    top: -3.5px;
-    left: calc(50% - 3.5px);
-    box-shadow: 0 0 12px currentColor;
-  }
-  .orbit-ring:nth-child(1) .orbit-dot { background: var(--plasma); color: var(--plasma); }
-  .orbit-ring:nth-child(2) .orbit-dot { background: var(--aurora); color: var(--aurora); }
-  .orbit-ring:nth-child(3) .orbit-dot { background: var(--plasma2); color: var(--plasma2); }
-  .orbit-center {
-    width: 72px; height: 72px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0,212,255,0.3) 0%, rgba(123,97,255,0.15) 50%, transparent 100%);
-    border: 1px solid rgba(0,212,255,0.4);
-    box-shadow: 0 0 40px rgba(0,212,255,0.25), inset 0 0 20px rgba(0,212,255,0.1);
+    background: radial-gradient(circle at 38% 38%,
+      #1a6fa8 0%, #0e4d7a 35%, #083358 65%, #041e38 100%);
+    border: 2px solid rgba(0,180,255,0.35);
+    box-shadow:
+      0 0 0 6px rgba(0,212,255,0.06),
+      0 0 0 14px rgba(0,212,255,0.03),
+      0 0 50px rgba(0,180,255,0.3),
+      inset 0 0 20px rgba(0,100,200,0.3);
+    z-index: 5;
+    animation: earthPulse 4s ease-in-out infinite;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.6rem;
-    z-index: 2;
-    animation: pulse 3s ease-in-out infinite;
+    font-size: 1.8rem;
+    overflow: hidden;
+    position: relative;
   }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  /* Atmosphere halo */
+  .earth-core::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    background: radial-gradient(circle, transparent 55%, rgba(0,212,255,0.12) 75%, rgba(0,212,255,0.04) 90%, transparent 100%);
+    animation: atmosPulse 3s ease-in-out infinite;
+  }
+  @keyframes earthPulse {
+    0%,100% { box-shadow: 0 0 0 6px rgba(0,212,255,0.06), 0 0 0 14px rgba(0,212,255,0.03), 0 0 50px rgba(0,180,255,0.3), inset 0 0 20px rgba(0,100,200,0.3); }
+    50%      { box-shadow: 0 0 0 8px rgba(0,212,255,0.1),  0 0 0 18px rgba(0,212,255,0.05), 0 0 80px rgba(0,180,255,0.5), inset 0 0 30px rgba(0,150,255,0.4); }
+  }
+  @keyframes atmosPulse {
+    0%,100% { opacity:0.6; transform:scale(1); }
+    50%     { opacity:1;   transform:scale(1.05); }
+  }
+
+  /* Orbit paths — 3D tilted ellipses (visual guides only) */
+  .orbit-path {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .orbit-path.op1 { width: 360px; height: 140px; border: 1px solid rgba(0,212,255,0.18); transform: rotateX(75deg) rotateZ(0deg); }
+  .orbit-path.op2 { width: 300px; height: 115px; border: 1px solid rgba(123,97,255,0.22); transform: rotateX(75deg) rotateZ(60deg); }
+  .orbit-path.op3 { width: 230px; height: 90px;  border: 1px solid rgba(0,255,224,0.18); transform: rotateX(75deg) rotateZ(120deg); }
+
+  /* Satellite canvas overlay */
+  #sat-canvas {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 6;
+  }
+
+  /* ─── SUN with eruptions ─── */
+  .solar-flare {
+    position: absolute;
+    top: 10px; right: 18px;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 38%, #fff7a0 0%, #ffd000 30%, #ff8800 65%, #ff4400 100%);
+    box-shadow: 0 0 18px #ffcc00, 0 0 36px #ff8800, 0 0 60px rgba(255,120,0,0.45);
+    animation: sunPulse 3s ease-in-out infinite;
+    z-index: 8;
+  }
+  /* Corona halo */
+  .solar-flare::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,200,0,0.18) 40%, transparent 80%);
+    animation: coronaPulse 3s ease-in-out infinite;
+  }
+  /* Eruption spikes — CSS clip-based rays */
+  .solar-flare::after {
+    content: '';
+    position: absolute;
+    inset: -14px;
+    border-radius: 50%;
+    background:
+      conic-gradient(
+        transparent 0deg,   rgba(255,180,0,0.55) 4deg,  transparent 8deg,
+        transparent 38deg,  rgba(255,160,0,0.45) 43deg, transparent 48deg,
+        transparent 82deg,  rgba(255,200,0,0.6)  86deg, transparent 91deg,
+        transparent 128deg, rgba(255,140,0,0.5) 133deg, transparent 138deg,
+        transparent 168deg, rgba(255,180,0,0.55) 173deg,transparent 178deg,
+        transparent 210deg, rgba(255,160,0,0.45) 215deg,transparent 220deg,
+        transparent 255deg, rgba(255,200,0,0.6) 260deg, transparent 265deg,
+        transparent 300deg, rgba(255,140,0,0.5) 305deg, transparent 310deg,
+        transparent 345deg, rgba(255,180,0,0.55) 350deg,transparent 355deg
+      );
+    animation: eruptionSpin 8s linear infinite;
+    mask-image: radial-gradient(circle, transparent 38%, black 42%, black 70%, transparent 100%);
+    -webkit-mask-image: radial-gradient(circle, transparent 38%, black 42%, black 70%, transparent 100%);
+  }
+  @keyframes sunPulse {
+    0%,100% { box-shadow: 0 0 18px #ffcc00, 0 0 36px #ff8800, 0 0 60px rgba(255,120,0,0.45); transform: scale(1); }
+    50%      { box-shadow: 0 0 28px #ffe000, 0 0 55px #ff9900, 0 0 90px rgba(255,140,0,0.6);  transform: scale(1.08); }
+  }
+  @keyframes coronaPulse {
+    0%,100% { transform: scale(1);    opacity: 0.7; }
+    50%      { transform: scale(1.15); opacity: 1; }
+  }
+  @keyframes eruptionSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  /* Signal rings emanating from Earth */
+  .signal-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(0,212,255,0.3);
+    animation: signalExpand 3s ease-out infinite;
+  }
+  .signal-ring:nth-child(1) { width: 90px; height: 90px; animation-delay: 0s; }
+  .signal-ring:nth-child(2) { width: 90px; height: 90px; animation-delay: 1s; }
+  .signal-ring:nth-child(3) { width: 90px; height: 90px; animation-delay: 2s; }
+
+  @keyframes signalExpand {
+    0%   { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(4.5); opacity: 0; }
+  }
+
   @keyframes pulse {
     0%, 100% { box-shadow: 0 0 40px rgba(0,212,255,0.25), inset 0 0 20px rgba(0,212,255,0.1); }
     50% { box-shadow: 0 0 70px rgba(0,212,255,0.45), inset 0 0 30px rgba(0,212,255,0.2); }
@@ -787,6 +951,34 @@
 <!-- ANIMATED BACKGROUND CANVAS -->
 <canvas id="ionosphere-canvas"></canvas>
 
+<!-- CUSTOM CURSOR -->
+<div id="cursor-outer"></div>
+<div id="cursor-inner"></div>
+<canvas id="cursor-trail" width="1" height="1"></canvas>
+
+<!-- SPACE WEATHER LIVE TICKER -->
+<div class="sw-banner" style="position:fixed;top:58px;left:0;right:0;z-index:99;">
+  <div class="sw-ticker">
+    <span class="sw-item"><span class="sw-dot green"></span> KP INDEX: 2.3 — QUIET</span>
+    <span class="sw-item"><span class="sw-dot yellow"></span> SOLAR WIND: 420 km/s</span>
+    <span class="sw-item"><span class="sw-dot cyan"></span> TEC ANOMALY: NOMINAL</span>
+    <span class="sw-item"><span class="sw-dot red"></span> X-RAY FLUX: C1.2 — MINOR FLARE</span>
+    <span class="sw-item"><span class="sw-dot green"></span> IONOSPHERE: STABLE</span>
+    <span class="sw-item"><span class="sw-dot yellow"></span> PROTON FLUX: 0.4 pfu</span>
+    <span class="sw-item"><span class="sw-dot cyan"></span> GNSS SCINTILLATION: S4 = 0.18</span>
+    <span class="sw-item"><span class="sw-dot green"></span> MAGNETIC Bz: -2.1 nT</span>
+    <!-- duplicate for seamless loop -->
+    <span class="sw-item"><span class="sw-dot green"></span> KP INDEX: 2.3 — QUIET</span>
+    <span class="sw-item"><span class="sw-dot yellow"></span> SOLAR WIND: 420 km/s</span>
+    <span class="sw-item"><span class="sw-dot cyan"></span> TEC ANOMALY: NOMINAL</span>
+    <span class="sw-item"><span class="sw-dot red"></span> X-RAY FLUX: C1.2 — MINOR FLARE</span>
+    <span class="sw-item"><span class="sw-dot green"></span> IONOSPHERE: STABLE</span>
+    <span class="sw-item"><span class="sw-dot yellow"></span> PROTON FLUX: 0.4 pfu</span>
+    <span class="sw-item"><span class="sw-dot cyan"></span> GNSS SCINTILLATION: S4 = 0.18</span>
+    <span class="sw-item"><span class="sw-dot green"></span> MAGNETIC Bz: -2.1 nT</span>
+  </div>
+</div>
+
 <!-- NAV -->
 <nav>
   <div class="container">
@@ -824,10 +1016,20 @@
         </div>
       </div>
       <div class="hero-visual">
-        <div class="orbit-ring"><div class="orbit-dot"></div></div>
-        <div class="orbit-ring"><div class="orbit-dot"></div></div>
-        <div class="orbit-ring"><div class="orbit-dot"></div></div>
-        <div class="orbit-center">🛰️</div>
+        <!-- 3D tilted orbit path guides -->
+        <div class="orbit-path op1"></div>
+        <div class="orbit-path op2"></div>
+        <div class="orbit-path op3"></div>
+        <!-- Signal rings from Earth -->
+        <div class="signal-ring"></div>
+        <div class="signal-ring"></div>
+        <div class="signal-ring"></div>
+        <!-- Earth at center -->
+        <div class="earth-core">🌍</div>
+        <!-- Satellites drawn on canvas for true 3D elliptical orbits -->
+        <canvas id="sat-canvas" width="420" height="420"></canvas>
+        <!-- Solar activity dot -->
+        <div class="solar-flare"></div>
       </div>
     </div>
   </div>
@@ -1237,8 +1439,8 @@
       <div>
         <p class="contact-intro">I am always open to research collaborations, academic discussions, and opportunities in space science, GNSS, and machine learning. Whether you are a fellow researcher, institution, or industry partner — feel free to reach out.</p>
         <div class="contact-links">
-          <a href="mailto:nagavijayadeepthi@gmail.com" class="contact-link">
-            <span class="contact-link-icon">✉️</span> nagavijayadeepthi@gmail.com
+          <a href="/cdn-cgi/l/email-protection#016f60666077686b6078606564647175696841666c60686d2f626e6c" class="contact-link">
+            <span class="contact-link-icon">✉️</span> <span class="__cf_email__" data-cfemail="3c525d5b5d4a55565d455d5859594c4854557c5b515d5550125f5351">[email&#160;protected]</span>
           </a>
           <a href="https://orcid.org" target="_blank" class="contact-link">
             <span class="contact-link-icon">🔬</span> ORCID Profile
@@ -1257,17 +1459,17 @@
           <div class="ref-card">
             <div class="ref-name">Prof. Dr. Valerie Renaudin</div>
             <div class="ref-role">Post-Doctoral Supervisor · Head, AME-GEOLOC<br>Université Gustave Eiffel, Nantes, France</div>
-            <div class="ref-email">valerie.renaudin@univ-eiffel.fr</div>
+            <div class="ref-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2355424f46514a460d51464d4256474a4d63564d4a550e464a4545464f0d4551">[email&#160;protected]</a></div>
           </div>
           <div class="ref-card">
             <div class="ref-name">Prof. Dr. Abhirup Datta</div>
             <div class="ref-role">Ph.D. Thesis Supervisor · Head, Dept. of Astronomy &amp; Space Engineering<br>IIT Indore, India</div>
-            <div class="ref-email">abhirup.datta@iiti.ac.in</div>
+            <div class="ref-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d9b8bbb1b0abaca9f7bdb8adadb899b0b0adb0f7b8baf7b0b7">[email&#160;protected]</a></div>
           </div>
           <div class="ref-card">
             <div class="ref-name">Dr. Saurabh Das</div>
             <div class="ref-role">Ph.D. Research Collaborator · Asst. Professor<br>Dept. of Astronomy &amp; Space Engineering, IIT Indore</div>
-            <div class="ref-email">saurabh.das@iiti.ac.in</div>
+            <div class="ref-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e39082969182818bcd878290a38a8a978acd8280cd8a8d">[email&#160;protected]</a></div>
           </div>
         </div>
       </div>
@@ -1284,6 +1486,7 @@
 
 <!-- CANVAS ANIMATION -->
 <script>
+// ─── BACKGROUND CANVAS ───
 const canvas = document.getElementById('ionosphere-canvas');
 const ctx = canvas.getContext('2d');
 let W, H, lines = [], particles = [];
@@ -1296,28 +1499,30 @@ function resize() {
 
 function initLines() {
   lines = [];
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 7; i++) {
     lines.push({
-      y: H * (0.1 + i * 0.14),
-      amplitude: 18 + Math.random() * 30,
-      freq: 0.003 + Math.random() * 0.004,
-      speed: 0.0008 + Math.random() * 0.001,
+      y: H * (0.08 + i * 0.13),
+      amplitude: 16 + Math.random() * 32,
+      freq: 0.002 + Math.random() * 0.004,
+      speed: 0.0006 + Math.random() * 0.001,
       phase: Math.random() * Math.PI * 2,
-      alpha: 0.06 + Math.random() * 0.1,
+      alpha: 0.05 + Math.random() * 0.1,
       color: i % 3 === 0 ? '0,212,255' : i % 3 === 1 ? '123,97,255' : '0,255,224',
-      width: 0.5 + Math.random() * 0.8
+      width: 0.5 + Math.random() * 0.9
     });
   }
   particles = [];
-  for (let i = 0; i < 60; i++) {
+  // Regular drifting particles
+  for (let i = 0; i < 55; i++) {
     particles.push({
       x: Math.random() * W,
       y: Math.random() * H,
-      r: Math.random() * 1.5,
+      r: 0.5 + Math.random() * 1.4,
       vx: (Math.random() - 0.5) * 0.2,
-      vy: -0.1 - Math.random() * 0.3,
-      alpha: 0.15 + Math.random() * 0.35,
-      color: Math.random() > 0.5 ? '0,212,255' : '123,97,255'
+      vy: -0.1 - Math.random() * 0.28,
+      alpha: 0.12 + Math.random() * 0.3,
+      color: Math.random() > 0.5 ? '0,212,255' : '123,97,255',
+      solar: false
     });
   }
 }
@@ -1325,12 +1530,12 @@ function initLines() {
 let t = 0;
 function draw() {
   ctx.clearRect(0, 0, W, H);
-  t += 0.6;
+  t += 0.55;
 
-  // Subtle radial glow top-center
-  const grad = ctx.createRadialGradient(W/2, 0, 0, W/2, 0, H * 0.6);
-  grad.addColorStop(0, 'rgba(0,212,255,0.04)');
-  grad.addColorStop(0.5, 'rgba(123,97,255,0.02)');
+  // Radial aurora glow
+  const grad = ctx.createRadialGradient(W/2, H*0.1, 0, W/2, H*0.1, H * 0.65);
+  grad.addColorStop(0, 'rgba(0,212,255,0.045)');
+  grad.addColorStop(0.4, 'rgba(123,97,255,0.025)');
   grad.addColorStop(1, 'transparent');
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, W, H);
@@ -1344,21 +1549,26 @@ function draw() {
     }
     ctx.strokeStyle = `rgba(${l.color},${l.alpha})`;
     ctx.lineWidth = l.width;
-    ctx.shadowColor = `rgba(${l.color},0.4)`;
-    ctx.shadowBlur = 6;
+    ctx.shadowColor = `rgba(${l.color},0.35)`;
+    ctx.shadowBlur = 5;
     ctx.stroke();
     ctx.shadowBlur = 0;
   });
 
-  // Floating particles
+  // Particles (drifting + solar wind)
   particles.forEach(p => {
-    p.x += p.vx; p.y += p.vy;
-    if (p.y < -5) { p.y = H + 5; p.x = Math.random() * W; }
-    if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+    if (p.solar) {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x > W + 10) { p.x = -5; p.y = Math.random() * H * 0.65; }
+    } else {
+      p.x += p.vx; p.y += p.vy;
+      if (p.y < -5) { p.y = H + 5; p.x = Math.random() * W; }
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+    }
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
     ctx.fillStyle = `rgba(${p.color},${p.alpha})`;
-    ctx.shadowColor = `rgba(${p.color},0.6)`;
+    ctx.shadowColor = `rgba(${p.color},0.55)`;
     ctx.shadowBlur = 4;
     ctx.fill();
     ctx.shadowBlur = 0;
@@ -1367,9 +1577,168 @@ function draw() {
   requestAnimationFrame(draw);
 }
 
+// ─── SOLAR WIND PARTICLE INJECTOR ───
+setInterval(() => {
+  if (Math.random() < 0.4 && particles.length < 140) {
+    particles.push({
+      x: -5,
+      y: Math.random() * H * 0.65,
+      r: 0.5 + Math.random() * 0.9,
+      vx: 1.8 + Math.random() * 2.6,
+      vy: (Math.random() - 0.5) * 0.25,
+      alpha: 0.18 + Math.random() * 0.28,
+      color: Math.random() > 0.55 ? '255,180,0' : '0,212,255',
+      solar: true
+    });
+  }
+}, 90);
+
 window.addEventListener('resize', resize);
 resize();
 draw();
+
+// ─── SATELLITE 3D CANVAS ORBITS ───
+const satCanvas = document.getElementById('sat-canvas');
+if (satCanvas) {
+  const sc = satCanvas.getContext('2d');
+  const CX = 210, CY = 210;
+
+  const orbits = [
+    { rx: 178, ry: 58,  tiltZ: 0,             speed:  0.38, color: '0,212,255',  sats: [0, Math.PI] },
+    { rx: 148, ry: 48,  tiltZ: Math.PI/3,      speed: -0.55, color: '123,97,255', sats: [0, Math.PI] },
+    { rx: 112, ry: 36,  tiltZ: 2*Math.PI/3,    speed:  0.85, color: '0,255,224',  sats: [0, Math.PI] },
+  ];
+
+  function ellipsePoint(orbit, angle) {
+    const lx = Math.cos(angle) * orbit.rx;
+    const ly = Math.sin(angle) * orbit.ry;
+    const cosZ = Math.cos(orbit.tiltZ);
+    const sinZ = Math.sin(orbit.tiltZ);
+    return {
+      x: CX + lx * cosZ - ly * sinZ,
+      y: CY + lx * sinZ + ly * cosZ,
+      depth: -Math.sin(angle) * Math.cos(orbit.tiltZ) + Math.cos(angle) * Math.sin(orbit.tiltZ)
+    };
+  }
+
+  // Trail history: for each orbit, for each sat, store last N points
+  const TRAIL_LEN = 42;
+  let trails = orbits.map(o => o.sats.map(() => []));
+  let satAngles = orbits.map(o => o.sats.map(offset => offset));
+  let lastSatTime = null;
+
+  function drawSats(ts) {
+    if (!lastSatTime) lastSatTime = ts;
+    const dt = Math.min((ts - lastSatTime) / 1000, 0.05);
+    lastSatTime = ts;
+
+    sc.clearRect(0, 0, 420, 420);
+
+    orbits.forEach((orbit, oi) => {
+      // Advance angles
+      orbit.sats.forEach((_, si) => {
+        satAngles[oi][si] += orbit.speed * dt;
+      });
+
+      orbit.sats.forEach((_, si) => {
+        const angle = satAngles[oi][si];
+        const pt = ellipsePoint(orbit, angle);
+
+        // Store trail point
+        trails[oi][si].push({ x: pt.x, y: pt.y, depth: pt.depth });
+        if (trails[oi][si].length > TRAIL_LEN) trails[oi][si].shift();
+
+        // ── Draw orbit trail ──
+        const trail = trails[oi][si];
+        if (trail.length > 2) {
+          for (let i = 1; i < trail.length; i++) {
+            const frac = i / trail.length;           // 0→1 (oldest→newest)
+            const alpha = frac * frac * 0.55;        // fade older points out
+            const width = frac * 1.4;
+            const p0 = trail[i - 1];
+            const p1 = trail[i];
+            sc.beginPath();
+            sc.moveTo(p0.x, p0.y);
+            sc.lineTo(p1.x, p1.y);
+            sc.strokeStyle = `rgba(${orbit.color},${alpha.toFixed(3)})`;
+            sc.lineWidth = width;
+            sc.lineCap = 'round';
+            sc.stroke();
+          }
+        }
+
+        // ── Draw satellite (no glow) ──
+        const depthNorm = (pt.depth + 1) / 2;
+        const size  = 10 + depthNorm * 7;
+        const alpha = 0.5 + depthNorm * 0.5;
+
+        sc.save();
+        sc.globalAlpha = alpha;
+        sc.font = `${size}px serif`;
+        sc.textAlign = 'center';
+        sc.textBaseline = 'middle';
+        sc.fillText('🛰️', pt.x, pt.y);
+        sc.restore();
+      });
+    });
+
+    requestAnimationFrame(drawSats);
+  }
+  requestAnimationFrame(drawSats);
+}
+
+const cursorOuter = document.getElementById('cursor-outer');
+const cursorInner = document.getElementById('cursor-inner');
+const trailCanvas  = document.getElementById('cursor-trail');
+const tc = trailCanvas.getContext('2d');
+
+function resizeTrail() {
+  trailCanvas.width  = window.innerWidth;
+  trailCanvas.height = window.innerHeight;
+}
+resizeTrail();
+window.addEventListener('resize', resizeTrail);
+
+let mx = -200, my = -200;
+let ox = -200, oy = -200;
+const trailPts = [];
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursorInner.style.left = mx + 'px';
+  cursorInner.style.top  = my + 'px';
+  trailPts.push({ x: mx, y: my });
+  if (trailPts.length > 30) trailPts.shift();
+});
+
+document.querySelectorAll('a, button, .skill-card, .stat-card, .project-card, .pub-item, .award-item').forEach(el => {
+  el.addEventListener('mouseenter', () => cursorOuter.classList.add('hovering'));
+  el.addEventListener('mouseleave', () => cursorOuter.classList.remove('hovering'));
+});
+document.addEventListener('mousedown', () => cursorOuter.classList.add('clicking'));
+document.addEventListener('mouseup',   () => cursorOuter.classList.remove('clicking'));
+
+function animateCursor() {
+  ox += (mx - ox) * 0.1;
+  oy += (my - oy) * 0.1;
+  cursorOuter.style.left = ox + 'px';
+  cursorOuter.style.top  = oy + 'px';
+
+  tc.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
+  for (let i = 1; i < trailPts.length; i++) {
+    const frac = i / trailPts.length;
+    const p = trailPts[i];
+    tc.beginPath();
+    tc.arc(p.x, p.y, 2.2 * frac, 0, Math.PI * 2);
+    tc.fillStyle = `rgba(0,212,255,${0.45 * frac * frac})`;
+    tc.shadowColor = 'rgba(0,212,255,0.4)';
+    tc.shadowBlur = 5;
+    tc.fill();
+    tc.shadowBlur = 0;
+  }
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
 </script>
 </body>
 </html>
