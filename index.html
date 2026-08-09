@@ -17,26 +17,11 @@
 <div id="cursor-inner"></div>
 <canvas id="cursor-trail" width="1" height="1"></canvas>
 
-<!-- SPACE WEATHER LIVE TICKER -->
+<!-- SPACE WEATHER LIVE TICKER — populated by js/space-weather.js from NOAA SWPC, refreshed hourly -->
 <div class="sw-banner" style="position:fixed;top:58px;left:0;right:0;z-index:99;">
-  <div class="sw-ticker">
-    <span class="sw-item"><span class="sw-dot green"></span> KP INDEX: 2.3 — QUIET</span>
-    <span class="sw-item"><span class="sw-dot yellow"></span> SOLAR WIND: 420 km/s</span>
-    <span class="sw-item"><span class="sw-dot cyan"></span> TEC ANOMALY: NOMINAL</span>
-    <span class="sw-item"><span class="sw-dot red"></span> X-RAY FLUX: C1.2 — MINOR FLARE</span>
-    <span class="sw-item"><span class="sw-dot green"></span> IONOSPHERE: STABLE</span>
-    <span class="sw-item"><span class="sw-dot yellow"></span> PROTON FLUX: 0.4 pfu</span>
-    <span class="sw-item"><span class="sw-dot cyan"></span> GNSS SCINTILLATION: S4 = 0.18</span>
-    <span class="sw-item"><span class="sw-dot green"></span> MAGNETIC Bz: -2.1 nT</span>
-    <!-- duplicate for seamless loop -->
-    <span class="sw-item"><span class="sw-dot green"></span> KP INDEX: 2.3 — QUIET</span>
-    <span class="sw-item"><span class="sw-dot yellow"></span> SOLAR WIND: 420 km/s</span>
-    <span class="sw-item"><span class="sw-dot cyan"></span> TEC ANOMALY: NOMINAL</span>
-    <span class="sw-item"><span class="sw-dot red"></span> X-RAY FLUX: C1.2 — MINOR FLARE</span>
-    <span class="sw-item"><span class="sw-dot green"></span> IONOSPHERE: STABLE</span>
-    <span class="sw-item"><span class="sw-dot yellow"></span> PROTON FLUX: 0.4 pfu</span>
-    <span class="sw-item"><span class="sw-dot cyan"></span> GNSS SCINTILLATION: S4 = 0.18</span>
-    <span class="sw-item"><span class="sw-dot green"></span> MAGNETIC Bz: -2.1 nT</span>
+  <div class="sw-ticker" id="sw-ticker">
+    <span class="sw-item"><span class="sw-dot cyan"></span> SPACE WEATHER: SYNCING WITH NOAA SWPC…</span>
+    <span class="sw-item"><span class="sw-dot cyan"></span> SPACE WEATHER: SYNCING WITH NOAA SWPC…</span>
   </div>
 </div>
 
@@ -239,6 +224,9 @@
 
 <!-- RENDER (builds sections from the data above) -->
 <script src="js/render.js"></script>
+
+<!-- LIVE DATA (fetches from NOAA SWPC, refreshes hourly — see js/space-weather.js for why not OMNIWeb directly) -->
+<script src="js/space-weather.js"></script>
 
 <!-- VISUAL EFFECTS (independent of content) -->
 <script src="js/background.js"></script>
