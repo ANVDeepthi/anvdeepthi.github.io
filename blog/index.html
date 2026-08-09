@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Blog — Naga Vijaya Deepthi Ayyagari</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+<!-- NAV — same links as the homepage, but pointing back at it; "Blog" points at this page -->
+<nav>
+  <div class="container">
+    <a class="nav-logo" href="../index.html">NVD<span>.</span>AYYAGARI</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#about">About</a></li>
+      <li><a href="../index.html#skills">Skills</a></li>
+      <li><a href="../index.html#experience">Experience</a></li>
+      <li><a href="../index.html#projects">Projects</a></li>
+      <li><a href="../index.html#publications">Publications</a></li>
+      <li><a href="index.html">Blog</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="page-intro">
+  <div class="container">
+    <div class="section-label">Field Notes</div>
+    <h2>Blog</h2>
+    <p class="contact-intro" style="max-width:640px; margin-top:-2rem; margin-bottom:3rem;">Personal thoughts, travel, and the odd photo — the less formal side of the site.</p>
+    <div class="blog-grid" id="blog-grid"><!-- filled by js/blog-render.js from js/data/blog-posts.js --></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p>© 2026 <span>Naga Vijaya Deepthi Ayyagari</span> · Space Scientist · North Eastern Space Applications Centre · Meghalaya, India</p>
+  </div>
+</footer>
+
+<script src="../js/data/blog-posts.js"></script>
+<script src="../js/blog-render.js"></script>
+</body>
+</html>
