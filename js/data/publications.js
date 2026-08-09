@@ -50,14 +50,11 @@ const PUBLICATIONS_DATA = {
       authors: 'D. Ayyagari, S. Chakraborty, A. Datta',
       journal: 'URSI AP-RASC 2019 · DOI: 10.23919/URSIAP-RASC.2019.8738244'
     }
-  ]
-
-  Book/Book Chapters: [
+  ],
+  // authors/journal are optional — omit them for a placeholder entry like this one.
+  bookChapters: [
     {
-      title: 'Coming Soon',
-      badge: 'Coming Soon',
-      authors: 'Coming Soon',
-      journal: 'Coming Soon'
+      title: 'Coming soon'
     }
   ]
 };
