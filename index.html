@@ -71,12 +71,12 @@
         <div class="signal-ring"></div>
         <div class="signal-ring"></div>
         <div class="signal-ring"></div>
-        <!-- Earth at center -->
-        <div class="earth-core">🌍</div>
+        <!-- Earth at center — .earth-surface is a rotating continent texture, see css/style.css -->
+        <div class="earth-core"><div class="earth-surface"></div></div>
         <!-- Satellites drawn on canvas for true 3D elliptical orbits -->
         <canvas id="sat-canvas" width="420" height="420"></canvas>
-        <!-- Solar activity dot -->
-        <div class="solar-flare"></div>
+        <!-- Solar activity dot — .solar-surface is a churning granulation texture, see css/style.css -->
+        <div class="solar-flare"><div class="solar-surface"></div></div>
       </div>
     </div>
   </div>
