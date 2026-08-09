@@ -1,6 +1,6 @@
 // Blog post listing — one entry per post, rendered as cards on blog/index.html
 // by js/blog-render.js. This is metadata only: the actual writing lives in its
-// own file under blog/posts/ (see blog/post-template.html to start a new one).
+// own file under blog/posts/ (see blog/posts/_post-template.html to start a new one).
 //
 // Fields:
 //   title      required  Post title, shown on the card and used as the page's <h1>
