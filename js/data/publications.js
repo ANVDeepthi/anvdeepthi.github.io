@@ -8,6 +8,11 @@ const PUBLICATIONS_DATA = {
       journal: 'Advances in Space Research · Vol. 65, Issue 6, 2020 · DOI: 10.1016/j.asr.2019.12.019'
     },
     {
+      title: 'Comparative Studies of Ionospheric Models with GNSS and NavIC over Indian Sector during Geomagnetic Activities',
+      authors: 'Sumanjit Chakraborty, Abhirup Datta, Sarbani Ray, Deepthi Ayyagari, Ashik Paul',
+      journal: 'Advances in Space Research · Vol. 66, Issue 4, 2020 · DOI: 10.1016/j.asr.2020.04.047'
+    },
+    {
       title: 'Systematic Study of Ionospheric Scintillation over Indian Low-Latitudes during Low Solar Activity',
       authors: 'Deepthi Ayyagari, Abhirup Datta, Sumanjit Chakraborty',
       journal: 'Advances in Space Research · Vol. 70, 2022 · DOI: 10.1016/j.asr.2022.07.026'
@@ -16,6 +21,11 @@ const PUBLICATIONS_DATA = {
       title: 'Ionospheric Response during Tropical Cyclones: a brief review on Amphan and Nisarga',
       authors: 'Deepthi Ayyagari, Soumen Datta, Saurabh Das, Abhirup Datta',
       journal: 'Advances in Space Research · 2022 · DOI: 10.1016/j.asr.2022.11.026'
+    },    
+    {
+      title: 'First Results of Low-latitude Ionospheric Irregularities Measured by NavIC and GPS near the Anomaly Crest and the Magnetic Equator',
+      authors: 'Sumanjit Chakraborty, Abhirup Datta, Deepthi Ayyagari',
+      journal: 'arXiv:2203.02218 · DOI: 10.48550/arXiv.2203.02218'
     }
   ],
   conference: [
@@ -40,17 +50,14 @@ const PUBLICATIONS_DATA = {
       authors: 'D. Ayyagari, S. Chakraborty, A. Datta',
       journal: 'URSI AP-RASC 2019 · DOI: 10.23919/URSIAP-RASC.2019.8738244'
     }
-  ],
-  coauthored: [
+  ]
+
+  Book/Book Chapters: [
     {
-      title: 'Comparative Studies of Ionospheric Models with GNSS and NavIC over Indian Sector during Geomagnetic Activities',
-      authors: 'Sumanjit Chakraborty, Abhirup Datta, Sarbani Ray, Deepthi Ayyagari, Ashik Paul',
-      journal: 'Advances in Space Research · Vol. 66, Issue 4, 2020 · DOI: 10.1016/j.asr.2020.04.047'
-    },
-    {
-      title: 'First Results of Low-latitude Ionospheric Irregularities Measured by NavIC and GPS near the Anomaly Crest and the Magnetic Equator',
-      authors: 'Sumanjit Chakraborty, Abhirup Datta, Deepthi Ayyagari',
-      journal: 'arXiv:2203.02218 · DOI: 10.48550/arXiv.2203.02218'
+      title: 'Coming Soon',
+      badge: 'Coming Soon',
+      authors: 'Coming Soon',
+      journal: 'Coming Soon'
     }
   ]
 };
