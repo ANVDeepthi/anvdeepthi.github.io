@@ -65,6 +65,8 @@ js/
   background.js           Hero canvas animation: starfield, aurora wash, ionospheric
                           wave lines, drifting particles, streaking solar wind.
   satellites.js            The three orbiting-satellite paths drawn in the hero.
+  earth.js                 The simplified rotating world map drawn onto the hero's
+                          Earth centerpiece.
   cursor.js                 Custom cursor ring + trailing particle effect.
   data/
     about.js               The 4 stat cards under "About Me"
@@ -73,7 +75,7 @@ js/
     education.js             The cards under "Education"
     projects.js               The cards under "Key Projects"
     publications.js           Three lists: journal articles, conference proceedings,
-                              co-authored papers
+                              book chapters
     awards.js                  The cards under "Honours & Awards"
     proficiency.js             Skill bars + spoken languages under "Technical
                               Proficiency"
@@ -82,10 +84,12 @@ js/
   blog-render.js          Reads blog-posts.js and builds the post cards on
                           blog/index.html. Separate from render.js because blog
                           pages don't load the rest of the homepage's scripts.
+  blog-cursor.js          The blog's sparkle-trail cursor effect — see
+                          [Blog stardust cursor](#blog-stardust-cursor)
 blog/
   index.html              Blog listing page (post cards)
-  post-template.html       Copy this to start a new post — see [Blog](#blog)
   posts/
+    _post-template.html        Copy this to start a new post — see [Blog](#blog)
     welcome-to-the-blog.html   A real, working sample post (safe to delete)
   images/
     posts/                 Drop post photos here (see the README.md inside it)
@@ -109,8 +113,8 @@ Nothing here is a module system — every `<script>` tag in `index.html` runs in
                         the content sections; could run in any position after <body>.
 4. js/background.js     )
    js/satellites.js      )  Purely visual — don't read or depend on any of the
-   js/cursor.js          )  rendered content, except cursor.js, which attaches
-                            hover listeners to cards that render.js just built, so
+   js/earth.js            )  rendered content, except cursor.js, which attaches
+   js/cursor.js          )  hover listeners to cards that render.js just built, so
                             it must load after render.js or those hover effects
                             won't attach to anything.
 ```
@@ -284,11 +288,11 @@ The blog is a separate, lighter section of the site — personal thoughts, trave
 
 - **The homepage is one page**; render.js builds all its sections from data files at load time. **The blog is multiple plain HTML pages** — a listing page plus one file per post — because long-form writing with inline photos is much easier to write directly as HTML than to cram into a JS array field.
 - **Only post *metadata* is data-driven.** `js/data/blog-posts.js` holds each post's title, date, excerpt, tags, and a link to its file — that's what builds the cards on the Blog page. The actual writing lives in its own file under `blog/posts/`, written by hand.
-- **Blog pages don't load the homepage's visual-effect scripts** — no animated hero canvas, no orbiting satellites, no custom cursor, no space weather ticker. Those are homepage-specific; a page meant for reading text and looking at photos doesn't need them, and skipping them keeps blog pages lighter. They *do* share `css/style.css`, so the color scheme, fonts, and card styling all match the rest of the site.
+- **Blog pages don't load the homepage's heavier visual-effect scripts** — no animated hero canvas, no orbiting satellites, no space weather ticker. Those are homepage-specific; a page meant for reading text and looking at photos doesn't need them, and skipping them keeps blog pages lighter. They *do* share `css/style.css`, so the color scheme, fonts, and card styling all match the rest of the site, and they have their own lighter cursor effect — see [Blog stardust cursor](#blog-stardust-cursor) below.
 
 ### Writing a new post
 
-1. Copy `blog/post-template.html` into `blog/posts/`, and rename it to something like `your-post-title.html`
+1. Duplicate `blog/posts/_post-template.html` in place, and rename the copy to something like `your-post-title.html`
 2. Fill in the title, date, tags, and write your paragraphs inside `<article class="post-body">` — the template has TODO comments marking exactly what to replace
 3. If you have photos: drop them in `blog/images/posts/` (see the README.md in that folder for size guidance), then uncomment one of the `<img>` patterns already in the template — one for a single photo with a caption, one for two side by side
 4. Add one entry to `js/data/blog-posts.js` with the post's title, date, excerpt, and a link to the file you just created — this is what makes it show up as a card on the Blog page. Field reference:
@@ -310,7 +314,20 @@ The included `blog/posts/welcome-to-the-blog.html` is a real, working sample pos
 
 ### Linking back to the homepage
 
-Blog pages use relative paths back to the homepage's sections (e.g. `../index.html#about`) since they're separate documents, not anchors on the same page. If you ever rename a homepage section id or restructure the nav, you'll need to mirror that change in three places: `index.html`, `blog/index.html`, and `blog/post-template.html` (existing posts under `blog/posts/` too, if you want them to match — they won't break, their nav links just won't reflect the change).
+Blog pages use relative paths back to the homepage's sections (e.g. `../index.html#about`) since they're separate documents, not anchors on the same page. If you ever rename a homepage section id or restructure the nav, you'll need to mirror that change in three places: `index.html`, `blog/index.html`, and `blog/posts/_post-template.html` (existing posts too, if you want them to match — they won't break, their nav links just won't reflect the change).
+
+### Blog stardust cursor
+
+`js/blog-cursor.js` adds a small trail of fading sparkle particles that follows the pointer on blog pages — distinct from the homepage's cursor (`js/cursor.js`), which fully replaces the native cursor with a ring + dot. On the blog, **the native cursor stays visible and fully usable** (selecting text, resizing, whatever your OS normally shows); the sparkles are purely decorative, added on top.
+
+It creates its own `<canvas>` element at runtime, so wiring it into a page is just one script tag — no markup to keep in sync:
+```html
+<script src="../js/blog-cursor.js"></script>   <!-- from blog/index.html -->
+<script src="../../js/blog-cursor.js"></script> <!-- from a file under blog/posts/ -->
+```
+It's already included in `blog/index.html`, `blog/posts/_post-template.html`, and the sample post — a new post duplicated from the template inherits it automatically.
+
+Colors are pulled from the same `--plasma`/`--plasma2`/`--aurora` CSS variables the rest of the site uses (see [Design system](#design-system)), so changing the accent color there updates the sparkles too, with nothing to touch in this file. Sparkles spawn as the pointer moves (not while it's still), cap at 60 concurrent particles, and fade out over 700ms — and like `js/background.js`, the effect pauses via `visibilitychange` when the tab is backgrounded.
 
 ---
 
@@ -329,6 +346,7 @@ All colors and fonts are CSS custom properties, defined once in the `:root { ...
 | `--mono` | Monospace font — labels, badges, timestamps, anything meant to look technical |
 | `--head` | Heading font (Rajdhani) |
 | `--body` | Body/paragraph font (Crimson Pro) |
+| `--noise-svg` | The fractal-noise SVG data URI used for the page-wide grain overlay and the sun's granulation texture — defined once so both uses stay in sync |
 
 **Fonts** are loaded from Google Fonts via the `<link>` tag in `index.html`'s `<head>`. If you change `--head`/`--body`/`--mono` to a font that isn't already loaded, update that `<link>` too, or the browser will silently fall back to a generic font.
 
@@ -341,7 +359,7 @@ All colors and fonts are CSS custom properties, defined once in the `:root { ...
 ## Animations & visual effects
 
 <details>
-<summary>Click to expand — internals of the three effect scripts</summary>
+<summary>Click to expand — internals of the effect scripts, plus the CSS-only sun</summary>
 
 ### `js/background.js` — hero backdrop
 
@@ -367,6 +385,17 @@ Draws three tilted elliptical orbit paths with satellites moving along them, eac
 ### `js/cursor.js` — custom cursor
 
 Replaces the OS cursor with a ring + dot + particle trail. Attaches a "hovering" state to `a`, `button`, `.skill-card`, `.stat-card`, `.project-card`, `.pub-item`, and `.award-item` — since most of those are rendered by `render.js`, this script has to load *after* `render.js` or the hover listeners will attach to nothing.
+
+### `js/earth.js` — rotating world map
+
+Draws a rough, simplified world map onto `#earth-canvas` (in `.earth-core`, the hero's centerpiece), then pans it sideways each frame to fake axial rotation without any 3D — a scrolling texture under a fixed lighting gradient, the standard trick for this effect. Continents are hand-simplified `[longitude, latitude]` point lists (not survey data) — the goal is correct *relative* positions and rough silhouettes (Americas west, Africa/Europe center, Asia east, Australia southeast, properly separated by ocean), not cartographic accuracy. Pre-rendered once onto an offscreen canvas, then just repositioned every frame rather than redrawn. `.earth-core`'s own CSS radial-gradient supplies the ocean color and lit-sphere shading; this canvas only paints land, leaving everything else transparent so that gradient shows through.
+
+### The sun — CSS only, no JS
+
+`.solar-flare` (in `css/style.css`, markup in `index.html`'s hero) isn't canvas-driven — it's a plain div animated with CSS keyframes, no script involved.
+
+- **The granulation** reuses `--noise-svg` (the same fractal-noise texture as the page-wide grain overlay in `body::before`) at a much smaller tile size, drifting slowly via an animated `background-position`, to read as a churning plasma surface rather than a flat gradient.
+- **The eruption rays spin very slowly** (110s per rotation) on purpose — a fast spin reads as a cartoon pinwheel; a slow one reads as the sun's own rotation, and echoes Earth's in `js/earth.js`.
 
 </details>
 
@@ -441,7 +470,7 @@ Reload the page after any edit to see it. If you want auto-reload on save, any s
 4. Commit and push
 
 **Write a blog post** — see [Blog](#blog) for the full walkthrough; short version:
-1. Copy `blog/post-template.html` → `blog/posts/your-post-title.html`, write it
+1. Duplicate `blog/posts/_post-template.html` → `blog/posts/your-post-title.html`, write it
 2. Add a matching entry to `js/data/blog-posts.js`
 3. Reload `blog/index.html`, check the card and the post itself
 4. Commit and push

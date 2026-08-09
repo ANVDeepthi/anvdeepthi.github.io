@@ -71,8 +71,8 @@
         <div class="signal-ring"></div>
         <div class="signal-ring"></div>
         <div class="signal-ring"></div>
-        <!-- Earth at center — .earth-surface is a rotating continent texture, see css/style.css -->
-        <div class="earth-core"><div class="earth-surface"></div></div>
+        <!-- Earth at center — js/earth.js draws a simplified rotating world map onto #earth-canvas -->
+        <div class="earth-core"><canvas id="earth-canvas" width="80" height="80"></canvas></div>
         <!-- Satellites drawn on canvas for true 3D elliptical orbits -->
         <canvas id="sat-canvas" width="420" height="420"></canvas>
         <!-- Solar activity dot — .solar-surface is a churning granulation texture, see css/style.css -->
@@ -232,6 +232,7 @@
 <!-- VISUAL EFFECTS (independent of content) -->
 <script src="js/background.js"></script>
 <script src="js/satellites.js"></script>
+<script src="js/earth.js"></script>
 <script src="js/cursor.js"></script>
 </body>
 </html>
