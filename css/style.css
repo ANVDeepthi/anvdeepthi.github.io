@@ -226,7 +226,10 @@ h1 .glow-name {
 .btn-secondary:hover { background: rgba(0,212,255,0.08); border-color: var(--plasma); }
 
 /* ─── CUSTOM CURSOR ─── */
-*, *::before, *::after { cursor: none !important; }
+/* Scoped to pages that actually load cursor.js (the homepage) — an unscoped
+   `cursor: none` would hide the native cursor on any page that includes this
+   stylesheet, even one with no replacement cursor drawn (e.g. the blog). */
+body.custom-cursor *, body.custom-cursor *::before, body.custom-cursor *::after { cursor: none !important; }
 #cursor-outer {
   position: fixed;
   width: 36px; height: 36px;
@@ -755,7 +758,7 @@ h3 {
 }
 .pub-subhead--journal     { color: var(--plasma); }
 .pub-subhead--conference  { color: var(--aurora); }
-.pub-subhead--coauthored  { color: var(--plasma2); }
+.pub-subhead--books       { color: var(--aurora2); }
 .pub-group { margin-bottom: 2.5rem; }
 .pub-group:last-child { margin-bottom: 0; }
 .pub-item {
@@ -805,8 +808,8 @@ h3 {
   border-left-color: var(--aurora);
 }
 .conf-pub-item .pub-journal { color: var(--aurora); }
-.coauthored-pub-item {
-  border-left-color: var(--plasma2);
+.bookchapters-pub-item {
+  border-left-color: var(--aurora2);
 }
 
 /* ─── AWARDS ─── */
@@ -953,6 +956,131 @@ footer p {
   letter-spacing: 0.12em;
 }
 footer span { color: var(--plasma); }
+
+/* ─── BLOG ─── */
+/* Shared by blog/index.html and blog/posts/*.html — those pages reuse .container,
+   .section-label, and h2 from the rest of the site, so only the blog-specific
+   pieces (cards, post header/body, photo patterns) are defined here. */
+
+/* clears the fixed nav on pages that don't have the hero's own top padding */
+.page-intro { padding-top: 150px; }
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+.blog-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+}
+.blog-card:hover { border-color: rgba(0,212,255,0.35); box-shadow: 0 0 30px var(--glow); transform: translateY(-3px); }
+.blog-card-cover { aspect-ratio: 16/9; background: var(--bg2); }
+.blog-card-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.blog-card-cover.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(0,212,255,0.08), rgba(123,97,255,0.08));
+  color: var(--text3);
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 1rem;
+}
+.blog-card-body { padding: 1.4rem; display: flex; flex-direction: column; flex: 1; }
+.blog-card-date { font-family: var(--mono); font-size: 0.65rem; color: var(--plasma); letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+.blog-card h3 { font-size: 1rem; line-height: 1.35; color: #deeef8; margin-bottom: 0.6rem; }
+.blog-card-excerpt { font-size: 0.88rem; color: var(--text2); flex: 1; margin-bottom: 1rem; }
+.blog-card-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.blog-tag {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  padding: 0.18rem 0.5rem;
+  border: 1px solid var(--border);
+  color: var(--text3);
+  border-radius: 2px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* individual post pages */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--text2);
+  text-decoration: none;
+  margin-bottom: 2rem;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--plasma); }
+.post-header { margin-bottom: 2.5rem; }
+.post-cover { width: 100%; max-height: 420px; object-fit: cover; border-radius: 4px; margin-bottom: 2rem; display: block; }
+.post-cover-placeholder {
+  width: 100%;
+  aspect-ratio: 21/9;
+  background: linear-gradient(135deg, rgba(0,212,255,0.08), rgba(123,97,255,0.1));
+  border: 1px dashed var(--border2);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text3);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.post-title { font-family: var(--head); font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; color: #e8f6ff; margin-bottom: 0.8rem; }
+.post-meta { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.post-date { font-family: var(--mono); font-size: 0.7rem; color: var(--plasma); letter-spacing: 0.1em; }
+.post-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.post-body { max-width: 720px; }
+.post-body p { color: var(--text2); margin-bottom: 1.4rem; font-size: 1.05rem; }
+.post-body h2, .post-body h3 { color: #deeef8; margin: 2rem 0 1rem; }
+.post-body code {
+  font-family: var(--mono);
+  font-size: 0.85em;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 0.1em 0.4em;
+  border-radius: 3px;
+  color: var(--plasma2);
+}
+.post-photo { width: 100%; border-radius: 4px; display: block; margin: 0.5rem 0; }
+.post-photo-caption { font-family: var(--mono); font-size: 0.7rem; color: var(--text3); text-align: center; margin: -0.7rem 0 1.5rem; }
+.post-photo-placeholder {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: linear-gradient(135deg, rgba(0,212,255,0.06), rgba(123,97,255,0.08));
+  border: 1px dashed var(--border2);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text3);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  text-align: center;
+  padding: 2rem;
+  margin: 0.5rem 0 1.5rem;
+}
+.post-photo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 0.5rem 0 1.5rem; }
+@media (max-width: 600px) { .post-photo-grid { grid-template-columns: 1fr; } }
 
 /* ─── UTILITY ─── */
 .divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--border2), transparent); margin: 2rem 0; }
