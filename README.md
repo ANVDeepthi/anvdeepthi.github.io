@@ -388,7 +388,13 @@ Replaces the OS cursor with a ring + dot + particle trail. Attaches a "hovering"
 
 ### `js/earth.js` — rotating world map
 
-Draws a rough, simplified world map onto `#earth-canvas` (in `.earth-core`, the hero's centerpiece), then pans it sideways each frame to fake axial rotation without any 3D — a scrolling texture under a fixed lighting gradient, the standard trick for this effect. Continents are hand-simplified `[longitude, latitude]` point lists (not survey data) — the goal is correct *relative* positions and rough silhouettes (Americas west, Africa/Europe center, Asia east, Australia southeast, properly separated by ocean), not cartographic accuracy. Each point list is drawn as a smooth curve *through* its points (Catmull-Rom, converted to bezier segments) rather than connected with straight lines — a handful of hand-placed vertices comes out looking like an organic coastline instead of a visibly angular polygon. Pre-rendered once onto an offscreen canvas, then just repositioned every frame rather than redrawn. `.earth-core`'s own CSS radial-gradient supplies the ocean color and lit-sphere shading; this canvas only paints land, leaving everything else transparent so that gradient shows through.
+Draws a simplified world map onto `#earth-canvas` (in `.earth-core`, the hero's centerpiece), then pans it sideways each frame to fake axial rotation without any 3D — a scrolling texture under a fixed lighting gradient, the standard trick for this effect.
+
+**The coastlines are real data, not hand-drawn approximations.** The `LAND` array's `[longitude, latitude]` points come from [Natural Earth](https://www.naturalearthdata.com/)'s public-domain 110m-resolution land dataset (no attribution legally required, credited here anyway — see [Attribution & license](#attribution--license)) — specifically the largest landmass rings (Africa+Europe+Asia, the Americas, Australia, Greenland, Madagascar), downsampled from their original ~50–1300 points per ring down to ~50–190 by keeping every Nth point, since an 80px icon can't show more detail than that anyway. Smaller islands and Antarctica are left out to keep the tiny render legible rather than cluttered.
+
+To regenerate or adjust this data (e.g. different detail level, different landmasses included), the extraction was: download `ne_110m_land.geojson` from Natural Earth, find the largest rings by point count, note their bounding boxes to identify which landmass is which, downsample by keeping every Nth point, round coordinates to 1 decimal place, and format as `[lon,lat]` pairs. Straight line segments between points are enough at this density — real coastline data doesn't need synthetic smoothing the way hand-placed guesses would.
+
+Pre-rendered once onto an offscreen canvas, then just repositioned every frame rather than redrawn. `.earth-core`'s own CSS radial-gradient supplies the ocean color and lit-sphere shading; this canvas only paints land, leaving everything else transparent so that gradient shows through.
 
 ### The sun — CSS only, no JS
 
@@ -536,4 +542,4 @@ Nothing here is urgent, but worth a glance every so often:
 
 ## Attribution & license
 
-Real-time space weather data courtesy of [NOAA Space Weather Prediction Center](https://www.swpc.noaa.gov/) (public data, no attribution required by them, credited here anyway). Fonts via [Google Fonts](https://fonts.google.com/) (Rajdhani, Share Tech Mono, Crimson Pro). See [`LICENSE`](LICENSE) for the repository's license.
+Real-time space weather data courtesy of [NOAA Space Weather Prediction Center](https://www.swpc.noaa.gov/) (public data, no attribution required by them, credited here anyway). Coastline data in `js/earth.js` from [Natural Earth](https://www.naturalearthdata.com/) (public domain, no attribution required, credited here anyway). Fonts via [Google Fonts](https://fonts.google.com/) (Rajdhani, Share Tech Mono, Crimson Pro). See [`LICENSE`](LICENSE) for the repository's license.
