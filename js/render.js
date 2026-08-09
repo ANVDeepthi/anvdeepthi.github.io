@@ -79,11 +79,12 @@ function renderProjects() {
 }
 
 function renderPublications() {
+  // authors/journal are optional — omit either for a placeholder-style entry (e.g. "Coming soon").
   const pubItem = (p, extraClass) => `
     <div class="pub-item ${extraClass || ''}">
       <div class="pub-title">${p.title}${p.badge ? ` <span class="pub-badge">${p.badge}</span>` : ''}</div>
-      <div class="pub-authors">${p.authors}</div>
-      <div class="pub-journal">${p.journal}</div>
+      ${p.authors ? `<div class="pub-authors">${p.authors}</div>` : ''}
+      ${p.journal ? `<div class="pub-journal">${p.journal}</div>` : ''}
     </div>
   `;
 
@@ -93,8 +94,10 @@ function renderPublications() {
   const confEl = document.getElementById('pub-conference-list');
   if (confEl) confEl.innerHTML = PUBLICATIONS_DATA.conference.map(p => pubItem(p, 'conf-pub-item')).join('');
 
-  const coEl = document.getElementById('pub-coauthored-list');
-  if (coEl) coEl.innerHTML = PUBLICATIONS_DATA.coauthored.map(p => pubItem(p, 'coauthored-pub-item')).join('');
+  const booksEl = document.getElementById('pub-bookchapters-list');
+  if (booksEl && PUBLICATIONS_DATA.bookChapters) {
+    booksEl.innerHTML = PUBLICATIONS_DATA.bookChapters.map(p => pubItem(p, 'bookchapters-pub-item')).join('');
+  }
 }
 
 function renderAwards() {
